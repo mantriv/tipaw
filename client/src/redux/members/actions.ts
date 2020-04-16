@@ -44,7 +44,7 @@ const DeleteMember = (id: string) => {
   }
 }
 
-const UpdateMember = (member: IMember) => {
+const EditMember = (member: IMember) => {
   return {
     type: UPDATE_MEMBER,
     payload: member
@@ -67,10 +67,8 @@ export const GetMembers = () => {
   export const FetchMember = (id: string) => {
     return (dispatch : any) => {
       dispatch(InitialRequest());
-      alert('Fetch ' + id)
+      // alert('Fetch ' + id)
       axios.get<IMember>(`/members/${id}`).then((member) => {
-        alert(JSON.stringify(member.data))
-        console.log(member)
         dispatch(GetMember(member.data))
       }).catch(error => {
         dispatch(GetRequestFaiure(error));
@@ -86,7 +84,7 @@ export const GetMembers = () => {
           .then(response => {
             swal({
                   title: "Great!",
-                  text: "Member saved successfullY!",
+                  text: "Member saved successfully!",
                   icon: "success",
                 })
             setTimeout(() => {dispatch(AddMember(member))}, 10);
@@ -96,6 +94,24 @@ export const GetMembers = () => {
           })
       }
     }
+
+    export const UpdateMember = (member: IMember) => {
+      return (dispatch : any) => {
+        dispatch(InitialRequest());
+        axios.put("/members", member)
+            .then(response => {
+              swal({
+                    title: "Great!",
+                    text: "Member saved successfully!",
+                    icon: "success",
+                  })
+              setTimeout(() => {dispatch(EditMember(member))}, 10);
+              
+            }).catch(error => {
+              dispatch(GetRequestFaiure(error));
+            })
+        }
+      }
 
     export const DeleteMembers = (id: string) => {
       return (dispatch : any) => {

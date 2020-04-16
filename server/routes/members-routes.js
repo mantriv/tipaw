@@ -38,6 +38,18 @@ router.delete('/:id', (req, res) => {
   }
 });
 
+router.put('/', (req, res) => {
+  try {
+    console.log(req.body)
+    let id = ObjectId(req.body._id);
+    req.body._id = id;
+    mongoClient.UpdateMember(req.body)    
+    res.send('Member updated successfully')
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 router.post('/', (req, res) => {
   try {
     let id = ObjectId(req.params._id);

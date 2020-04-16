@@ -1,5 +1,6 @@
 const mongoClient = require('mongodb').MongoClient;
 const constants = require('../constants')
+var ObjectId = require('mongodb').ObjectID;
 
 const mongoDbUrl = `mongodb://localhost:${constants.MONGODB_PORT}`
 
@@ -30,6 +31,28 @@ const AddMember = (document) => {
         console.log('Member created successfully')
       ).catch(error => {
         throw new Error(error.message)
+      });
+    }
+  })
+}
+
+const UpdateMember = (document) => {
+  // console.log(JSON.stringify(document))
+  const query = {"_id": document._id}
+  // console.log(query)
+  mongoClient.connect(mongoDbUrl, (err, client) => {
+    if (err) 
+    {
+      throw new Error(err.message)
+    }
+    else
+    {
+      const db = client.db(constants.MONGO_DB_NAME);
+      var newValues = { $set: {"firstname": document.firstname, "lastname": document.lastname, "email": document.email, 
+                  "telephone": document.telephone, "about": document.about, "message":document.message } };
+      db.collection(constants.MEMBER_COLLECITON_NAME).updateOne(query, newValues, function(err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
       });
     }
   })
@@ -96,5 +119,6 @@ module.exports = {
   AddMember,
   DeleteMember,
   GetMembers,
-  GetMember
+  GetMember,
+  UpdateMember
 }

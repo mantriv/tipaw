@@ -1,49 +1,43 @@
-import React, {useEffect, useState} from 'react'
-import { Card, Segment, Dimmer, Loader, Button } from 'semantic-ui-react'
-import axios from 'axios'
+import React, {useEffect} from 'react'
+import { Card } from 'semantic-ui-react'
 import { IMember } from '../models/IMember';
 import CardContainer from './custom/CardContainer';
 import {connect} from 'react-redux';
-import { initialState } from '../redux/members/reducer';
+import { IRootState } from '../redux/members/reducer';
 import { GetMembers } from '../redux/members/actions';
-import { Link } from 'react-router-dom';
 
 interface IProps 
 {
-  members: IMember[],
+  members: IMember[] | undefined,
   GetMembers: () => any,
-  membersReducer: any,
   loading: boolean,
   error: string
 }
 
-
-const Home: React.FC<IProps> = (props) => {
-
-
+const Home: React.FC<IProps> = ({GetMembers, error, loading, members}) => {
   useEffect(() => {
-    props.GetMembers()
+    GetMembers()
   }, [GetMembers])
 
-  if (props.error != undefined)
+  if (error !== undefined)
   {
     return (<h1 style={{textAlign:"center", marginTop:"300px"}}>
       Error
     </h1>)
   }
-  if (props.loading)
+  if (loading)
     return (<h1 style={{textAlign:"center", marginTop:"300px"}}>
       Loading...
     </h1>)
   return (
-    props.members?.length ? (<Card.Group>
-      {props.members?.map(data => (<CardContainer key={data._id.toString()} member={data} />))}
+    members?.length ? (<Card.Group>
+      {members?.map(data => (<CardContainer key={data._id.toString()} member={data} />))}
     </Card.Group>) : (<h1>No members found, click <a href='/members'>here</a> to add member</h1>)
 
   )
 }
 
-const mapStateToProps = (state: initialState) => {
+const mapStateToProps = (state: IRootState) => {
   const {loading, members, error} = state.membersReducer;
   return {
     loading,

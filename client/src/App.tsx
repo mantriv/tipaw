@@ -7,6 +7,7 @@ import MemberForm from './components/MemberForm';
 import {Provider} from 'react-redux';
 import store from './redux/store';
 import './App.css';
+import MemberFormEdit from './components/MemberFormEdit';
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route exact path='/' component={Home} />
         <Route exact path='/home' component={Home} />
         <Route exact path='/members' component={MemberForm} />
+        <Route exact path='/members/:id' component={MemberFormEdit} />
       </Container>    
     </Provider>
   );

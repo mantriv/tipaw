@@ -1,7 +1,6 @@
 import React from 'react'
-import { Card, Button, Image, Grid } from 'semantic-ui-react'
+import { Card, Button, Image } from 'semantic-ui-react'
 import { IMember } from '../../models/IMember';
-import axios from 'axios';
 import swal from 'sweetalert';
 import { DeleteMembers } from '../../redux/members/actions';
 import { connect } from 'react-redux';
@@ -51,6 +50,9 @@ const CardContainer: React.FC<IProps> = (props) => {
       </Card.Content>
       <Card.Content extra>
         <div className='ui two buttons'>
+          <Button basic color='green'  as={Link} to={`members/${member._id}`} style={{marginRight:"10px"}}>
+            Edit
+          </Button>
           <Button basic color='red' onClick={() => deleteHandler(member._id)}>
             Delete
           </Button>

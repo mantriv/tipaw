@@ -1,11 +1,15 @@
 import { IMember } from '../../models/IMember';
 import { LIST_MEMBERS, INITIATE_REQUEST, MEMBER_REQUEST_FAILUER, ADD_MEMBER, DELETE_MEMBER, FETCH_MEMBER } from './actionTypes';
 
+export interface IRootState extends initialState
+{
+  membersReducer: any
+}
+
 export interface initialState {
   member?: IMember,
   members?: IMember[],
   loading: false,
-  membersReducer: any,
   error: ''
 }
 
@@ -25,8 +29,8 @@ const membersReducer = (state: initialState, action: any) => {
 
       case FETCH_MEMBER: return {
         ...state,
-        loading: false,
-        member: action.member
+        loading: true,
+        member: action.payload
       }
 
       case ADD_MEMBER: return {
@@ -38,7 +42,7 @@ const membersReducer = (state: initialState, action: any) => {
       case DELETE_MEMBER: return {
         ...state,
         loading: false,
-        members: state.members?.filter(x => x._id != action.payload)
+        members: state.members?.filter(x => x._id !== action.payload)
       }
 
       case MEMBER_REQUEST_FAILUER: return {
